@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#fff9ef">
+    <meta name="description" content="あそびながら ひらがな・カタカナを かいてみよう。">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="もじのたね">
+    <link rel="manifest" href="./manifest.webmanifest">
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./assets/icon.svg">
+    <link rel="stylesheet" href="./styles.css">
+    <title>もじのたね</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="brand" data-nav="home" aria-label="ホームへ">
+          <span class="brand-mark" aria-hidden="true">✿</span>
+          <span>もじのたね</span>
+        </button>
+        <div class="topbar-right">
+          <span class="offline-pill" id="connectionStatus"><i></i> オフラインじゅんび中</span>
+          <button class="icon-button" id="soundToggle" aria-label="音声の設定" title="音声の設定">♪</button>
+        </div>
+      </header>
+
+      <main id="app" tabindex="-1"></main>
+
+      <nav class="bottom-nav" aria-label="メインメニュー">
+        <button data-nav="home" class="nav-item active"><span>⌂</span><small>ホーム</small></button>
+        <button data-nav="letters" class="nav-item"><span>あ</span><small>もじ</small></button>
+        <button data-nav="words" class="nav-item"><span>▧</span><small>ことば</small></button>
+        <button data-nav="stickers" class="nav-item"><span>✦</span><small>シール</small></button>
+      </nav>
+    </div>
+    <dialog id="modal" class="modal"></dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js" defer></script>
+  </body>
+</html>
