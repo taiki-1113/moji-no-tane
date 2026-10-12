@@ -1,13 +1,13 @@
 {
-  "name": "もじのたね",
-  "short_name": "もじのたね",
-  "description": "あそびながら ひらがな・カタカナを かいてみよう。",
+  "name": "あいうえおちょう",
+  "short_name": "あいうえおちょう",
+  "description": "ひらがなとことばを、じぶんのペースで練習するノートです。",
   "lang": "ja",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "orientation": "any",
-  "background_color": "#fff9ef",
-  "theme_color": "#fff9ef",
+  "orientation": "landscape",
+  "background_color": "#f5f4e8",
+  "theme_color": "#f5f4e8",
   "icons": [{"src":"./assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }
