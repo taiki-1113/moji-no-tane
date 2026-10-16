@@ -197,4 +197,13 @@ document.querySelector('#soundToggle').addEventListener('click',()=>{
 });
 window.addEventListener('online',()=>toast('ネットに つながったよ')); window.addEventListener('offline',()=>toast('オフラインだよ。じゅんびずみなら つかえるよ'));
 render();
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+if ('serviceWorker' in navigator) {
+  const build = '20261017-2';
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    const key = `moji-reloaded-${build}`;
+    if (sessionStorage.getItem(key)) return;
+    sessionStorage.setItem(key, '1');
+    location.reload();
+  });
+  navigator.serviceWorker.register(`./sw.js?v=${build}`).then(registration => registration.update()).catch(()=>{});
+}
