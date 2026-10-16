@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'moji-shell-v6';
+const SHELL_CACHE = 'moji-shell-v7';
 const ASSET_CACHE = 'moji-assets-v1';
 const SHELL = ['./', './index.html', './styles.css', './app.js', './manifest.webmanifest', './assets/icon.svg'];
 self.addEventListener('install', event => {
@@ -10,8 +10,19 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
-  event.respondWith(caches.match(request, {ignoreSearch:true}).then(cached => cached || fetch(request).then(response => {
-    if (response.ok) { const copy=response.clone(); caches.open(request.destination==='document'?SHELL_CACHE:ASSET_CACHE).then(cache=>cache.put(request,copy)); }
-    return response;
-  }).catch(() => request.mode==='navigate' ? caches.match('./index.html') : Response.error())));
+  const shellResource = SHELL.some(path => new URL(path,self.location).pathname === new URL(request.url).pathname);
+  event.respondWith((async () => {
+    const shell = await caches.open(SHELL_CACHE);
+    const assets = await caches.open(ASSET_CACHE);
+    const cached = await (shellResource ? shell.match(request,{ignoreSearch:true}) : assets.match(request,{ignoreSearch:true}));
+    if (cached) return cached;
+    try {
+      const response = await fetch(request);
+      if (response.ok) await (shellResource ? shell : assets).put(request,response.clone());
+      return response;
+    } catch {
+      if (request.mode==='navigate') return (await shell.match('./index.html',{ignoreSearch:true})) || Response.error();
+      return Response.error();
+    }
+  })());
 });

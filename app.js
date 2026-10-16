@@ -87,23 +87,26 @@ function glyphMarkup(char, variant='guide') {
   if (char === 'ー') return `<span class="kana-glyph kana-glyph-long ${variant}">ー</span>`;
   const decomposed=char.normalize('NFD');
   const smallBase = {'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お','ゃ':'や','ゅ':'ゆ','ょ':'よ','っ':'つ','ゎ':'わ','ァ':'ア','ィ':'イ','ゥ':'ウ','ェ':'エ','ォ':'オ','ャ':'ヤ','ュ':'ユ','ョ':'ヨ','ッ':'ツ','ヮ':'ワ'};
-  const baseChar=smallBase[decomposed[0]] || decomposed[0];
-  const mark=decomposed.includes('\u3099')?'dakuten':decomposed.includes('\u309a')?'handakuten':'';
+  const baseChar=smallBase[char] || decomposed[0];
+  const voiced = !smallBase[char] && (decomposed.includes('\u3099') || decomposed.includes('\u309a'));
   const group=hiragana.includes(char) || 'ぁぃぅぇぉゃゅょっゎ'.includes(char) || hiragana.includes(baseChar)?'hiragana':'katakana';
   const small=smallBase[char] !== undefined;
-  const source=`./assets/strokes/${group}/${baseChar}.svg`;
+  const source=`./assets/strokes/${group}/${voiced?char:baseChar}.svg`;
   const reload=variant==='guide'?`?play=${Date.now()}`:'';
-  return `<span class="kana-glyph ${variant} ${small?'small-kana':''} ${mark}" aria-label="${char}"><img src="${source}${reload}" alt=""><i></i></span>`;
+  return `<span class="kana-glyph ${variant} ${small?'small-kana':''}" aria-label="${char}"><img src="${source}${reload}" alt=""><i></i></span>`;
 }
 function openLesson(letter, {word=null, index=0}={}) {
   const lessonLetters = word ? [...word.word] : [letter];
   const title = word ? `「${word.word}」を つづけて かこう` : `「${letter}」を かいてみよう`;
-  const guideMarkup = `<div class="guide-word ${word?'':'single-glyph'}" style="--guide-count:${lessonLetters.length}">${lessonLetters.map(char => `<figure>${glyphMarkup(char,'guide')}<figcaption>${char}</figcaption></figure>`).join('')}</div>`;
+  const wordRows = Math.min(5, lessonLetters.length);
+  const wordColumns = Math.ceil(lessonLetters.length / wordRows);
+  const wordGridStyle = `--word-rows:${wordRows};--word-cols:${wordColumns}`;
+  const guideMarkup = `<div class="guide-word ${word?'vertical-word':'single-glyph'}" style="--guide-count:${lessonLetters.length};${word?wordGridStyle:''}">${lessonLetters.map(char => `<figure>${glyphMarkup(char,'guide')}<figcaption>${char}</figcaption></figure>`).join('')}</div>`;
   const ghostMarkup = lessonLetters.map(char => glyphMarkup(char,'trace')).join('');
   const cellCount = lessonLetters.length;
   modal.innerHTML = `<div class="lesson"><div class="lesson-top"><div class="lesson-title"><span class="brand-mark">${word ? '♡' : 'あ'}</span><div><span class="eyebrow">${word ? 'ことばを れんしゅう' : 'もじを れんしゅう'}</span><h2>${title}</h2></div></div><button class="close-button" aria-label="とじる">×</button></div>
   <div class="lesson-layout ${word ? 'word-lesson' : ''}"><div class="guide-card">${guideMarkup}<div class="guide-label">かきかたの おてほん</div><div class="guide-actions"><button class="button secondary small" id="replayGuide">↻ もういちど</button><button class="button soft small" id="hearLetter">♪ きく</button></div></div>
-  <div class="write-card"><div class="write-instructions"><strong>${word ? 'ひだりから つづけて かこう' : 'おてほんを みて かこう'}</strong><button class="text-button" id="hideGuide">おてほんを かくす</button></div><div class="canvas-wrap ${word ? 'word-canvas' : ''}" style="--cell-count:${cellCount}"><span id="ghostChar" class="ghost-char ${word ? 'word-ghost' : ''}">${ghostMarkup}</span><canvas id="writeCanvas" aria-label="${word ? `${word.word}を つづけて かく` : `${letter}を かく`}キャンバス"></canvas></div><div class="canvas-controls"><button class="button secondary small" id="undoStroke">↶ ひとつ もどす</button><button class="button secondary small" id="clearCanvas">けす</button></div></div></div>
+  <div class="write-card"><div class="write-instructions"><strong>${word ? 'みぎの れつから うえ→したへ' : 'おてほんを みて かこう'}</strong><button class="text-button" id="hideGuide">おてほんを かくす</button></div><div class="canvas-wrap ${word ? 'word-canvas' : ''}" style="--cell-count:${cellCount};${word?wordGridStyle:''}"><span id="ghostChar" class="ghost-char ${word ? 'word-ghost' : ''}" style="${word?wordGridStyle:''}">${ghostMarkup}</span><canvas id="writeCanvas" aria-label="${word ? `${word.word}を たてに つづけて かく` : `${letter}を かく`}キャンバス"></canvas></div><div class="canvas-controls"><button class="button secondary small" id="undoStroke">↶ ひとつ もどす</button><button class="button secondary small" id="clearCanvas">けす</button></div></div></div>
   <div class="lesson-bottom"><span class="lesson-route-label">${word ? `${word.word.length} もじ` : 'すきな もじ'}</span><button class="button" id="finishLesson">${word ? 'できた！' : 'できた！ シールを もらう'}</button></div></div>`;
   modal.showModal();
   setupCanvas(document.querySelector('#writeCanvas'));
@@ -158,9 +161,10 @@ async function prepareOffline() {
   const progress=document.querySelector('#setupProgress');
   try {
     const registration=await navigator.serviceWorker.ready;
-    const chars=[...new Set([...hiragana,...katakana])];
+    const wordChars=words.flatMap(item=>[...item.word]).filter(ch=>ch!=='ー');
+    const chars=[...new Set([...hiragana,...katakana,...wordChars])];
     for(let i=0;i<chars.length;i++){
-      const ch=chars[i], group=hiragana.includes(ch)?'hiragana':'katakana';
+      const ch=chars[i], normalized=ch.normalize('NFD')[0], group=hiragana.includes(ch) || hiragana.includes(normalized)?'hiragana':'katakana';
       const response=await fetch(`./assets/strokes/${group}/${ch}.svg`,{cache:'reload'});
       if(!response.ok)throw new Error(`おてほんを よみこめません: ${ch}`);
       const cache=await caches.open('moji-assets-v1'); await cache.put(`./assets/strokes/${group}/${ch}.svg`,response.clone());
@@ -198,7 +202,7 @@ document.querySelector('#soundToggle').addEventListener('click',()=>{
 window.addEventListener('online',()=>toast('ネットに つながったよ')); window.addEventListener('offline',()=>toast('オフラインだよ。じゅんびずみなら つかえるよ'));
 render();
 if ('serviceWorker' in navigator) {
-  const build = '20261017-2';
+  const build = '20261017-3';
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     const key = `moji-reloaded-${build}`;
     if (sessionStorage.getItem(key)) return;

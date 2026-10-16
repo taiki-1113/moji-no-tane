@@ -365,3 +365,45 @@ h1 { color: #653b82; }
   .single-glyph { width: 145px; }
   .lesson { padding: 14px; }
 }
+
+/* Word practice follows Japanese vertical writing order: top to bottom, then right to left. */
+.kana-glyph.dakuten::before, .kana-glyph.dakuten::after, .kana-glyph.handakuten::after { content:none; }
+.word-lesson .guide-word.vertical-word {
+  grid-template-columns:none;
+  grid-template-rows:repeat(var(--word-rows),minmax(0,1fr));
+  grid-auto-columns:minmax(0,1fr);
+  grid-auto-flow:column;
+  direction:rtl;
+  height:min(39vh,300px);
+  justify-content:center;
+}
+.word-lesson .vertical-word figure { display:flex; flex-direction:column; justify-content:center; align-items:center; min-height:0; }
+.word-lesson .vertical-word .kana-glyph { width:min(100%,78px); max-height:calc(100% - 14px); }
+.word-lesson .vertical-word figcaption { margin:0; line-height:1; }
+.word-lesson .guide-card { min-width:0; min-height:0; }
+.word-lesson .word-canvas {
+  min-height:370px;
+  background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(100% / var(--word-cols) - 1px),#e9daed calc(100% / var(--word-cols) - 1px),#e9daed calc(100% / var(--word-cols))),repeating-linear-gradient(to bottom,transparent 0,transparent calc(100% / var(--word-rows) - 1px),#e9daed calc(100% / var(--word-rows) - 1px),#e9daed calc(100% / var(--word-rows)));
+}
+.word-lesson .word-canvas::before, .word-lesson .word-canvas::after { display:none; }
+.word-lesson .word-ghost {
+  grid-template-columns:repeat(var(--word-cols),minmax(0,1fr));
+  grid-template-rows:repeat(var(--word-rows),minmax(0,1fr));
+  grid-auto-columns:auto;
+  grid-auto-flow:column;
+  direction:rtl;
+}
+.word-lesson .word-ghost .kana-glyph { width:100%; height:100%; max-width:100%; }
+.word-lesson .word-ghost span { font-size:min(11vw,78px); }
+@media (max-width:900px) and (orientation:portrait) {
+  .modal:has(.word-lesson) { width:calc(100vw - 18px); max-height:94vh; }
+  .word-lesson { grid-template-columns:1fr; gap:12px; }
+  .word-lesson .guide-card { padding:12px; }
+  .word-lesson .guide-actions { margin-top:8px; }
+  .word-lesson .word-canvas { min-height:min(48vh,420px); }
+}
+@media (max-width:560px) {
+  .word-lesson .guide-word.vertical-word { height:min(31vh,230px); }
+  .word-lesson .word-canvas { min-height:380px; }
+  .word-lesson .word-ghost span { font-size:min(14vw,68px); }
+}
