@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fff2fb">
+    <title>あいうえおちょうを更新</title>
+    <style>
+      :root { color-scheme: light; font-family: system-ui, sans-serif; color: #563b65; background: #fff7fd; }
+      body { min-height: 100vh; margin: 0; display: grid; place-items: center; }
+      main { width: min(440px, calc(100% - 40px)); box-sizing: border-box; padding: 28px; border: 2px solid #f2d4ee; border-radius: 24px; background: #fffaff; text-align: center; }
+      h1 { font-size: 1.35rem; }
+      p { line-height: 1.8; }
+      button { min-height: 48px; padding: 10px 22px; border: 0; border-radius: 16px; background: linear-gradient(100deg, #f565b8, #bd67e9); color: white; font: inherit; font-weight: 700; }
+      button:disabled { opacity: .55; }
+      #status { color: #886a91; font-size: .9rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>あいうえおちょうを更新します</h1>
+      <p>古い表示の設定だけを更新します。れんしゅうの記録はそのままです。</p>
+      <p id="status" role="status" aria-live="polite">じゅんびしています…</p>
+      <button id="openLatest" type="button" disabled>さいしんのページをひらく</button>
+    </main>
+    <script>
+      const button = document.querySelector('#openLatest');
+      const status = document.querySelector('#status');
+      async function prepareUpdate() {
+        try {
+          if ('serviceWorker' in navigator) {
+            const appRoot = new URL('./', location.href).href;
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            const appRegistrations = registrations.filter(registration => registration.scope.startsWith(appRoot));
+            await Promise.all(appRegistrations.map(registration => registration.unregister()));
+          }
+          status.textContent = 'じゅんびできました。ボタンをおしてください。';
+          button.disabled = false;
+        } catch {
+          status.textContent = 'じゅんびできませんでした。ネットにつないで、もういちどひらいてください。';
+        }
+      }
+      button.addEventListener('click', () => {
+        const latest = new URL('./', location.href);
+        latest.searchParams.set('refresh', String(Date.now()));
+        window.open(latest.href, '_blank', 'noopener');
+      });
+      prepareUpdate();
+    </script>
+  </body>
+</html>
