@@ -242,7 +242,7 @@ h1 { color: #653b82; }
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat(5,minmax(58px,1fr));
-  grid-template-columns: repeat(11,minmax(0,1fr));
+  grid-template-columns: repeat(10,minmax(0,1fr));
   gap: 9px;
   direction: rtl;
   padding: 13px;
@@ -345,7 +345,7 @@ h1 { color: #653b82; }
 .toast { background: #79518a; }
 @media (max-width:760px) {
   .app-shell { padding: 0 14px 100px; }
-  .kana-grid { grid-template-rows: repeat(5,minmax(50px,1fr)); grid-template-columns: repeat(11,minmax(48px,1fr)); gap: 6px; overflow-x: auto; }
+  .kana-grid { grid-template-rows: repeat(5,minmax(50px,1fr)); grid-template-columns: repeat(10,minmax(48px,1fr)); gap: 6px; overflow-x: auto; }
   .kana-card { border-radius: 14px; font-size: 25px; }
   .page-header { align-items: center; flex-direction: row; }
 }
