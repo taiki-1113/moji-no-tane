@@ -84,7 +84,7 @@ function renderStickers() {
   app.innerHTML = `<section class="page"><div class="page-header"><div><span class="eyebrow">がんばった しるし</span><h1>ごほうび</h1></div></div><div class="sticker-summary"><span>✿</span><div><b>${state.stickers.length}</b> <span>こ</span><p class="subtext">れんしゅうのあとに もらったよ</p></div></div><div class="sticker-board">${stickerSet.map((sticker,index) => `<div class="sticker ${state.stickers.includes(index)?'':'locked'}" aria-label="${state.stickers.includes(index)?'もらったスタンプ':'これから もらうスタンプ'}">${sticker}</div>`).join('')}</div></section>`;
 }
 function glyphMarkup(char, variant='guide') {
-  if (char === 'ー') return `<span class="kana-glyph kana-glyph-long ${variant}">ー</span>`;
+  if (char === 'ー') return `<span class="kana-glyph kana-glyph-long ${variant}" role="img" aria-label="のばす おと"><i></i></span>`;
   const decomposed=char.normalize('NFD');
   const smallBase = {'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お','ゃ':'や','ゅ':'ゆ','ょ':'よ','っ':'つ','ゎ':'わ','ァ':'ア','ィ':'イ','ゥ':'ウ','ェ':'エ','ォ':'オ','ャ':'ヤ','ュ':'ユ','ョ':'ヨ','ッ':'ツ','ヮ':'ワ'};
   const baseChar=smallBase[char] || decomposed[0];
@@ -99,7 +99,7 @@ function openLesson(letter, {word=null, index=0}={}) {
   const lessonLetters = word ? [...word.word] : [letter];
   const title = word ? `「${word.word}」を つづけて かこう` : `「${letter}」を かいてみよう`;
   const guideMarkup = `<div class="guide-word ${word?'':'single-glyph'}" style="--guide-count:${lessonLetters.length}">${lessonLetters.map(char => `<figure>${glyphMarkup(char,'guide')}<figcaption>${char}</figcaption></figure>`).join('')}</div>`;
-  const ghostMarkup = lessonLetters.map(char => glyphMarkup(char,'trace')).join('');
+  const ghostMarkup = lessonLetters.map(char => `<span class="trace-cell">${glyphMarkup(char,'trace')}</span>`).join('');
   const cellCount = lessonLetters.length;
   modal.innerHTML = `<div class="lesson"><div class="lesson-top"><div class="lesson-title"><span class="brand-mark">${word ? '♡' : 'あ'}</span><div><span class="eyebrow">${word ? 'ことばを れんしゅう' : 'もじを れんしゅう'}</span><h2>${title}</h2></div></div><button class="close-button" aria-label="とじる">×</button></div>
   <div class="lesson-layout ${word ? 'word-lesson' : ''}"><div class="guide-card">${guideMarkup}<div class="guide-label">かきかたの おてほん</div><div class="guide-actions"><button class="button secondary small" id="replayGuide">↻ もういちど</button><button class="button soft small" id="hearLetter">♪ きく</button></div></div>
@@ -199,7 +199,7 @@ document.querySelector('#soundToggle').addEventListener('click',()=>{
 window.addEventListener('online',()=>toast('ネットに つながったよ')); window.addEventListener('offline',()=>toast('オフラインだよ。じゅんびずみなら つかえるよ'));
 render();
 if ('serviceWorker' in navigator) {
-  const build = '20261017-4';
+  const build = '20261017-5';
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     const key = `moji-reloaded-${build}`;
     if (sessionStorage.getItem(key)) return;
