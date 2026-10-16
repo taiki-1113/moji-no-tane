@@ -343,7 +343,7 @@ h1 { color: #653b82; }
 .ghost-char .trace-cell .kana-glyph.trace { width: min(78%, 220px); height: auto; max-height: 100%; aspect-ratio: 1; }
 .word-ghost .trace-cell .kana-glyph.trace { width: min(100%, 110px); }
 .kana-glyph-long { color: transparent; font-size: 0; }
-.kana-glyph-long i { display: block; width: 62%; height: 7%; border-radius: 999px; background: #554556; transform: rotate(-12deg); }
+.kana-glyph-long i { display: block; width: 58%; height: 4%; border-radius: 999px; background: #554556; }
 .kana-glyph-long.trace i { background: #777; }
 @media (max-width:760px) {
   .app-shell { padding: 0 14px 100px; }

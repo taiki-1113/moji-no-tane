@@ -199,7 +199,7 @@ document.querySelector('#soundToggle').addEventListener('click',()=>{
 window.addEventListener('online',()=>toast('ネットに つながったよ')); window.addEventListener('offline',()=>toast('オフラインだよ。じゅんびずみなら つかえるよ'));
 render();
 if ('serviceWorker' in navigator) {
-  const build = '20261017-5';
+  const build = '20261017-6';
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     const key = `moji-reloaded-${build}`;
     if (sessionStorage.getItem(key)) return;
