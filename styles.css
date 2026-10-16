@@ -342,10 +342,11 @@ h1 { color: #653b82; }
 .trace-cell { display: grid; place-items: center; min-width: 0; height: 100%; }
 .ghost-char .trace-cell .kana-glyph.trace { width: min(78%, 220px); height: auto; max-height: 100%; aspect-ratio: 1; }
 .word-ghost .trace-cell .kana-glyph.trace { width: min(100%, 110px); }
-.kana-glyph-long { display: inline-block; position: relative; width: min(100%, 110px); aspect-ratio: 1; color: transparent; font-size: 0; }
-.kana-glyph-long::before { content: ""; position: absolute; left: 21%; top: 48%; width: 58%; height: 4px; border-radius: 999px; background: #554556; transform: translateY(-50%); }
+.kana-glyph-long { display: inline-grid; place-items: center; position: relative; width: min(100%, 110px); aspect-ratio: 1; color: transparent; font-size: 0; }
+.kana-glyph-long svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.kana-glyph-long path { fill: none; stroke: #554556; stroke-width: 5; stroke-linecap: round; }
 .kana-glyph-long.trace { opacity: 1; }
-.kana-glyph-long.trace::before { background: #d0cbd3; }
+.kana-glyph-long.trace path { stroke: #c8c0ce; }
 @media (max-width:760px) {
   .app-shell { padding: 0 14px 100px; }
   .kana-grid { grid-template-rows: repeat(5,minmax(50px,1fr)); grid-template-columns: repeat(10,minmax(48px,1fr)); gap: 6px; overflow-x: auto; }
