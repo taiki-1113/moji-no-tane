@@ -84,7 +84,7 @@ function renderStickers() {
   app.innerHTML = `<section class="page"><div class="page-header"><div><span class="eyebrow">がんばった しるし</span><h1>ごほうび</h1></div></div><div class="sticker-summary"><span>✿</span><div><b>${state.stickers.length}</b> <span>こ</span><p class="subtext">れんしゅうのあとに もらったよ</p></div></div><div class="sticker-board">${stickerSet.map((sticker,index) => `<div class="sticker ${state.stickers.includes(index)?'':'locked'}" aria-label="${state.stickers.includes(index)?'もらったスタンプ':'これから もらうスタンプ'}">${sticker}</div>`).join('')}</div></section>`;
 }
 function glyphMarkup(char, variant='guide') {
-  if (char === 'ー') return `<span class="kana-glyph kana-glyph-long ${variant}" role="img" aria-label="のばす おと"><i></i></span>`;
+  if (char === 'ー') return `<span class="kana-glyph kana-glyph-long ${variant}" role="img" aria-label="のばす おと"></span>`;
   const decomposed=char.normalize('NFD');
   const smallBase = {'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お','ゃ':'や','ゅ':'ゆ','ょ':'よ','っ':'つ','ゎ':'わ','ァ':'ア','ィ':'イ','ゥ':'ウ','ェ':'エ','ォ':'オ','ャ':'ヤ','ュ':'ユ','ョ':'ヨ','ッ':'ツ','ヮ':'ワ'};
   const baseChar=smallBase[char] || decomposed[0];
@@ -199,7 +199,7 @@ document.querySelector('#soundToggle').addEventListener('click',()=>{
 window.addEventListener('online',()=>toast('ネットに つながったよ')); window.addEventListener('offline',()=>toast('オフラインだよ。じゅんびずみなら つかえるよ'));
 render();
 if ('serviceWorker' in navigator) {
-  const build = '20261017-6';
+  const build = '20261017-7';
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     const key = `moji-reloaded-${build}`;
     if (sessionStorage.getItem(key)) return;
