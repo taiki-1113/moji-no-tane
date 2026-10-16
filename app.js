@@ -98,15 +98,12 @@ function glyphMarkup(char, variant='guide') {
 function openLesson(letter, {word=null, index=0}={}) {
   const lessonLetters = word ? [...word.word] : [letter];
   const title = word ? `「${word.word}」を つづけて かこう` : `「${letter}」を かいてみよう`;
-  const wordRows = Math.min(5, lessonLetters.length);
-  const wordColumns = Math.ceil(lessonLetters.length / wordRows);
-  const wordGridStyle = `--word-rows:${wordRows};--word-cols:${wordColumns}`;
-  const guideMarkup = `<div class="guide-word ${word?'vertical-word':'single-glyph'}" style="--guide-count:${lessonLetters.length};${word?wordGridStyle:''}">${lessonLetters.map(char => `<figure>${glyphMarkup(char,'guide')}<figcaption>${char}</figcaption></figure>`).join('')}</div>`;
+  const guideMarkup = `<div class="guide-word ${word?'':'single-glyph'}" style="--guide-count:${lessonLetters.length}">${lessonLetters.map(char => `<figure>${glyphMarkup(char,'guide')}<figcaption>${char}</figcaption></figure>`).join('')}</div>`;
   const ghostMarkup = lessonLetters.map(char => glyphMarkup(char,'trace')).join('');
   const cellCount = lessonLetters.length;
   modal.innerHTML = `<div class="lesson"><div class="lesson-top"><div class="lesson-title"><span class="brand-mark">${word ? '♡' : 'あ'}</span><div><span class="eyebrow">${word ? 'ことばを れんしゅう' : 'もじを れんしゅう'}</span><h2>${title}</h2></div></div><button class="close-button" aria-label="とじる">×</button></div>
   <div class="lesson-layout ${word ? 'word-lesson' : ''}"><div class="guide-card">${guideMarkup}<div class="guide-label">かきかたの おてほん</div><div class="guide-actions"><button class="button secondary small" id="replayGuide">↻ もういちど</button><button class="button soft small" id="hearLetter">♪ きく</button></div></div>
-  <div class="write-card"><div class="write-instructions"><strong>${word ? 'みぎの れつから うえ→したへ' : 'おてほんを みて かこう'}</strong><button class="text-button" id="hideGuide">おてほんを かくす</button></div><div class="canvas-wrap ${word ? 'word-canvas' : ''}" style="--cell-count:${cellCount};${word?wordGridStyle:''}"><span id="ghostChar" class="ghost-char ${word ? 'word-ghost' : ''}" style="${word?wordGridStyle:''}">${ghostMarkup}</span><canvas id="writeCanvas" aria-label="${word ? `${word.word}を たてに つづけて かく` : `${letter}を かく`}キャンバス"></canvas></div><div class="canvas-controls"><button class="button secondary small" id="undoStroke">↶ ひとつ もどす</button><button class="button secondary small" id="clearCanvas">けす</button></div></div></div>
+  <div class="write-card"><div class="write-instructions"><strong>${word ? 'ひだりから つづけて かこう' : 'おてほんを みて かこう'}</strong><button class="text-button" id="hideGuide">おてほんを かくす</button></div><div class="canvas-wrap ${word ? 'word-canvas' : ''}" style="--cell-count:${cellCount}"><span id="ghostChar" class="ghost-char ${word ? 'word-ghost' : ''}">${ghostMarkup}</span><canvas id="writeCanvas" aria-label="${word ? `${word.word}を つづけて かく` : `${letter}を かく`}キャンバス"></canvas></div><div class="canvas-controls"><button class="button secondary small" id="undoStroke">↶ ひとつ もどす</button><button class="button secondary small" id="clearCanvas">けす</button></div></div></div>
   <div class="lesson-bottom"><span class="lesson-route-label">${word ? `${word.word.length} もじ` : 'すきな もじ'}</span><button class="button" id="finishLesson">${word ? 'できた！' : 'できた！ シールを もらう'}</button></div></div>`;
   modal.showModal();
   setupCanvas(document.querySelector('#writeCanvas'));
@@ -202,7 +199,7 @@ document.querySelector('#soundToggle').addEventListener('click',()=>{
 window.addEventListener('online',()=>toast('ネットに つながったよ')); window.addEventListener('offline',()=>toast('オフラインだよ。じゅんびずみなら つかえるよ'));
 render();
 if ('serviceWorker' in navigator) {
-  const build = '20261017-3';
+  const build = '20261017-4';
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     const key = `moji-reloaded-${build}`;
     if (sessionStorage.getItem(key)) return;
