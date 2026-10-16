@@ -321,12 +321,14 @@ h1 { color: #653b82; }
 .kana-glyph { position: relative; display: inline-grid; place-items: center; aspect-ratio: 1; width: min(100%,110px); }
 .kana-glyph img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .kana-glyph.small-kana img { transform: scale(.72); }
-.kana-glyph.dakuten::after { content: ""; position: absolute; width: 25%; height: 10%; right: 16%; top: 18%; border-radius: 50%; background: #4a3d4b; transform: rotate(-35deg); box-shadow: 0 10px 0 #4a3d4b; }
-.kana-glyph.handakuten::after { content: ""; position: absolute; width: 18%; aspect-ratio: 1; right: 15%; top: 18%; border: 4px solid #4a3d4b; border-radius: 50%; }
+.kana-glyph.dakuten::before, .kana-glyph.dakuten::after { content: ""; position: absolute; width: 8%; aspect-ratio: 1; border-radius: 50%; background: #4a3d4b; }
+.kana-glyph.dakuten::before { right: 19%; top: 17%; }
+.kana-glyph.dakuten::after { right: 10%; top: 25%; }
+.kana-glyph.handakuten::after { content: ""; position: absolute; width: 17%; aspect-ratio: 1; right: 12%; top: 17%; border: 2.5px solid #4a3d4b; border-radius: 50%; }
 .kana-glyph-long { color: #554556; font-size: clamp(45px,12vw,95px); font-family: sans-serif; line-height: 1; }
 .kana-glyph.trace { width: 100%; height: 100%; max-width: none; opacity: .16; }
 .kana-glyph.trace img { filter: none; }
-.kana-glyph.trace.dakuten::after { background: #444; box-shadow: 0 10px 0 #444; }
+.kana-glyph.trace.dakuten::before, .kana-glyph.trace.dakuten::after { background: #444; }
 .kana-glyph.trace.handakuten::after { border-color: #444; }
 .ghost-char { display: grid; grid-template-columns: repeat(var(--cell-count),minmax(0,1fr)); padding: 5px; color: #555; opacity: 1; }
 .ghost-char:not(.word-ghost) { grid-template-columns: 1fr; }

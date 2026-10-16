@@ -86,10 +86,11 @@ function renderStickers() {
 function glyphMarkup(char, variant='guide') {
   if (char === 'ー') return `<span class="kana-glyph kana-glyph-long ${variant}">ー</span>`;
   const decomposed=char.normalize('NFD');
-  const baseChar=decomposed[0];
+  const smallBase = {'ぁ':'あ','ぃ':'い','ぅ':'う','ぇ':'え','ぉ':'お','ゃ':'や','ゅ':'ゆ','ょ':'よ','っ':'つ','ゎ':'わ','ァ':'ア','ィ':'イ','ゥ':'ウ','ェ':'エ','ォ':'オ','ャ':'ヤ','ュ':'ユ','ョ':'ヨ','ッ':'ツ','ヮ':'ワ'};
+  const baseChar=smallBase[decomposed[0]] || decomposed[0];
   const mark=decomposed.includes('\u3099')?'dakuten':decomposed.includes('\u309a')?'handakuten':'';
-  const group=hiragana.includes(baseChar)?'hiragana':'katakana';
-  const small='ぁぃぅぇぉゃゅょっァィゥェォャュョッ'.includes(char);
+  const group=hiragana.includes(char) || 'ぁぃぅぇぉゃゅょっゎ'.includes(char) || hiragana.includes(baseChar)?'hiragana':'katakana';
+  const small=smallBase[char] !== undefined;
   const source=`./assets/strokes/${group}/${baseChar}.svg`;
   const reload=variant==='guide'?`?play=${Date.now()}`:'';
   return `<span class="kana-glyph ${variant} ${small?'small-kana':''} ${mark}" aria-label="${char}"><img src="${source}${reload}" alt=""><i></i></span>`;

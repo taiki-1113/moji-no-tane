@@ -1,4 +1,4 @@
-const SHELL_CACHE = 'moji-shell-v4';
+const SHELL_CACHE = 'moji-shell-v5';
 const ASSET_CACHE = 'moji-assets-v1';
 const SHELL = ['./', './index.html', './styles.css', './app.js', './manifest.webmanifest', './assets/icon.svg'];
 self.addEventListener('install', event => {
