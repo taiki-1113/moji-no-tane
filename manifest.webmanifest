@@ -1,13 +1,13 @@
 {
   "name": "あいうえおちょう",
   "short_name": "あいうえおちょう",
-  "description": "ひらがなとことばを、じぶんのペースで練習するノートです。",
+  "description": "ひらがなとことばを、じぶんのペースでたのしくかくノートです。",
   "lang": "ja",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "landscape",
-  "background_color": "#f5f4e8",
-  "theme_color": "#f5f4e8",
+  "background_color": "#fff2fb",
+  "theme_color": "#fff2fb",
   "icons": [{"src":"./assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }

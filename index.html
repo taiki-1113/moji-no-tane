@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#f5f4e8">
-    <meta name="description" content="ひらがなとことばを、じぶんのペースで練習するノートです。">
+    <meta name="theme-color" content="#fff2fb">
+    <meta name="description" content="ひらがなとことばを、じぶんのペースでたのしくかくノートです。">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="あいうえおちょう">
     <link rel="manifest" href="./manifest.webmanifest">
@@ -16,23 +16,22 @@
   <body>
     <div class="app-shell">
       <header class="topbar">
-        <button class="brand" data-nav="home" aria-label="ホームへ">
-          <span class="brand-mark" aria-hidden="true">あ</span>
+        <button class="brand" data-nav="letters" aria-label="もじへ">
+          <span class="brand-mark" aria-hidden="true">✿</span>
           <span>あいうえおちょう</span>
         </button>
         <div class="topbar-right">
-          <span class="offline-pill" id="connectionStatus"><i></i> おてほん未準備</span>
-          <button class="icon-button" id="soundToggle" aria-label="音声の設定" title="音声の設定">♪</button>
+          <span class="offline-pill" id="connectionStatus"><i></i> おてほん じゅんび</span>
+          <button class="icon-button" id="soundToggle" aria-label="おとの せってい" title="おとの せってい">♪</button>
         </div>
       </header>
 
       <main id="app" tabindex="-1"></main>
 
       <nav class="bottom-nav" aria-label="メインメニュー">
-        <button data-nav="home" class="nav-item active"><span>⌂</span><small>ホーム</small></button>
-        <button data-nav="letters" class="nav-item"><span>あ</span><small>もじ</small></button>
-        <button data-nav="words" class="nav-item"><span>▧</span><small>ことば</small></button>
-        <button data-nav="stickers" class="nav-item"><span>✿</span><small>スタンプ</small></button>
+        <button data-nav="letters" class="nav-item active"><span>あ</span><small>もじ</small></button>
+        <button data-nav="words" class="nav-item"><span>♡</span><small>ことば</small></button>
+        <button data-nav="stickers" class="nav-item"><span>✿</span><small>ごほうび</small></button>
       </nav>
     </div>
     <dialog id="modal" class="modal"></dialog>
